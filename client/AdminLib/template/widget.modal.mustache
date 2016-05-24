@@ -1,0 +1,43 @@
+{{!
+
+Use : Modal displayed when an action is executed
+
+Data model :
+   [Root] :
+      - {boolean} fullwidth
+      - {string}  title           Title of the modal
+      - {string}  message         Message to display. HTML tags will be interpreted
+      - {Button}  continueButton  Informations about the "continue action" button
+
+   Button :
+      - {string} class
+      - {string} icon
+      - {string} label
+}}
+
+<div class="modal {{#fullwidth}}container{{/fullwidth}} fade modal-overflow" tabindex="-1" >
+
+   <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+      <h4 class="modal-title">{{title}}</h4>
+   </div>
+
+   <div class="modal-body">
+
+      <div id="returnButton" class="row hide">
+         <div class="col-md-12">
+            <a href="#">< {{returnLabel}}</a>
+         </div>
+      </div>
+
+      <div class="page row">
+         <div class="col-md-12">
+            {{{message}}}
+         </div>
+      </div>
+   </div>
+
+   <div class="modal-footer">
+  </div>
+
+</div>;

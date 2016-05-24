@@ -1,0 +1,20 @@
+/**
+ *
+ * About data :
+ *    Portlet datatables accept promise as data.
+ *
+ * About sizeClass :
+ *
+ * The sizeClass property will be used for the portlet.
+ * The sizeClass of the datatable will be the default
+ * value.
+ *
+ * @name AdminLib.widget.Portlet.Datatable.Parameters
+ * @typedef {Object}
+ *
+ * @mixes AdminLib.widget.Portlet.Parameters
+ * @mixes AdminLib.widget.Datatable.Parameters
+ *
+ * @property {Array|Promise.<Array>} data
+ *
+ */

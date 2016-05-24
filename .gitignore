@@ -1,0 +1,10 @@
+server/.vs/*
+server/packages/*
+server/AdminLib/obj/*
+server/AdminLib/bin/*
+server/DjangoSharp/bin/*
+server/DjangoSharp/obj/*
+*.dll
+*.suo
+*.dll
+server/DjangoSharp/bin/Oracle.ManagedDataAccess.dll

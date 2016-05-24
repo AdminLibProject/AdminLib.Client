@@ -1,0 +1,27 @@
+/**
+ * @name Parameters
+ * @namespace {AdminLib.widget.DropDown}
+ * @extends {AdminLib.Widget.Parameters}
+ *
+ * @property {boolean}           enabled      Default: true.
+ * @property {Entry.Parameters[]} entries      List of entries of the dropdown
+ * @property {string}            placeholder
+ */
+
+/**
+ * @name Parameters
+ * @namespace AdminLib.widget.Dropdown.Entry
+ * @extends {AdminLib.Widget}
+ *
+ * Separator :
+ *    An entry is a separator if icon, label, handler and url are all undefined
+ *
+ * Header
+ *    An entry is a header if it has a label but no url nor handler.
+ *
+ * @property {boolean}  enabled
+ * @property {string}   icon
+ * @property {string}   label
+ * @property {function} handler
+ * @property {string}   url
+ */

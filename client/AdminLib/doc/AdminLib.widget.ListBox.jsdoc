@@ -1,0 +1,12 @@
+/**
+ * @name Parameters
+ * @namespace AdminLib.widget.Listbox
+ * @property {ActionConfirmationParameter}        confirmation           See: AdminLib.Parameter.Action.confirmation
+ * @property {AdminLib.Parameters.Button|boolean}  confirmButton          Default: false. If true, then a confirm button will be provided to the user : he will have to click on it to confirm it's action.
+ * @property {boolean}                            enabled                Default: true. Indicate if the list box is enabled or not.
+ * @property {AdminLib.Parameters.ListOptionsLike} options                List of options to display.
+ * @property {string}                             placeholder            Placeholder to display. This will be the first options, displayed as default, but not selectable.
+ * @property {ActionValidationType}               validation             See: AdminLib.Parameter.Action.validation
+ * @property {boolean}                            validateBeforeConfirm  See: AdminLib.Parameter.Action.validateBeforeConfirm
+ *
+ */

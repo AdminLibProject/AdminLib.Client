@@ -1,0 +1,116 @@
+{{!
+
+List of special classes/IDs :
+   .page-title : Div that contain the title and subtitle of the page.
+   #page-content : Div that contain the content of the page
+   .page-breadcrumb : Div that contain the breadcrumb.
+   .username
+
+}}
+
+<!-- BEGIN HEADER -->
+<header class="page-header navbar navbar-fixed-top">
+   <!-- BEGIN HEADER INNER -->
+   <div class="page-header-inner">
+      <!-- BEGIN LOGO -->
+      <div class="page-logo">
+         <a href="index.html">
+            <img src="./static/metronic/assets/admin/layout/img/logo.png" alt="logo" class="logo-default"/>
+         </a>
+         <div class="menu-toggler sidebar-toggler hide">
+            <!-- DOC: Remove the above "hide" to enable the sidebar toggler button on header -->
+         </div>
+      </div>
+      <!-- END LOGO -->
+   </div>
+   <!-- END HEADER INNER -->
+   <!-- BEGIN RESPONSIVE MENU TOGGLER -->
+   <a href="javascript:;" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse"></a>
+   <!-- END RESPONSIVE MENU TOGGLER -->
+   <!-- BEGIN TOP NAVIGATION MENU -->
+   <div class="top-menu">
+   </div>
+</header>
+<!-- END HEADER -->
+
+<div class="clearfix"></div>
+
+<!-- BEGIN CONTAINER -->
+<div class="page-container">
+   <!-- BEGIN SIDEBAR -->
+   <div class="page-sidebar-wrapper">
+      <!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
+      <!-- DOC: Change data-auto-speed="200" to adjust the sub menu slide up/down speed -->
+      <div class="page-sidebar navbar-collapse collapse">
+
+         <!-- BEGIN SIDEBAR MENU -->
+         <!-- DOC: Apply "page-sidebar-menu-light" class right after "page-sidebar-menu" to enable light sidebar menu style(without borders) -->
+         <!-- DOC: Apply "page-sidebar-menu-hover-submenu" class right after "page-sidebar-menu" to enable hoverable(hover vs accordion) sub menu mode -->
+         <!-- DOC: Apply "page-sidebar-menu-closed" class right after "page-sidebar-menu" to collapse("page-sidebar-closed" class must be applied to the body element) the sidebar sub menu mode -->
+         <!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
+         <!-- DOC: Set data-keep-expand="true" to keep the submenues expanded -->
+         <!-- DOC: Set data-auto-speed="200" to adjust the sub menu slide up/down speed -->
+         <ul class="page-sidebar-menu" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
+            <li class="sidebar-toggler-wrapper">
+               <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+               <div class="sidebar-toggler"></div>
+               <!-- END SIDEBAR TOGGLER BUTTON -->
+            </li>
+         </ul>
+         <!-- END SIDEBAR MENU -->
+
+      </div>
+   </div>
+   <!-- END SIDEBAR -->
+
+   <!-- BEGIN CONTENT -->
+   <div class="page-content-wrapper">
+      <div class="page-content" style="min-height:1609px">
+
+         <!-- BEGIN PAGE HEADER-->
+         <h3 class="page-title firstLetterUppercase"></h3>
+         <div class="page-bar">
+            <ul class="page-breadcrumb">
+               <li>
+					   <i class="fa fa-home"></i>
+						<a href="index.html">Home</a>
+						<i class="fa fa-angle-right"></i>
+					</li>
+            </ul>
+            <div class="page-toolbar">
+               <div class="btn-group pull-right">
+						<button type="button"
+                          class="btn btn-fit-height grey-salt dropdown-toggle"
+                          data-toggle="dropdown"
+                          data-hover="dropdown"
+                          data-delay="1000"
+                          data-close-others="true
+                          " aria-expanded="false">
+						   Actions <i class="fa fa-angle-down"></i>
+						</button>
+						<ul class="dropdown-menu pull-right" role="menu">
+						</ul>
+					</div>
+            </div>
+         </div>
+         <!-- END PAGE HEADER-->
+         <!-- BEGIN PAGE CONTENT-->
+         <main class="row">
+         </main>
+         <!-- END PAGE CONTENT-->
+
+      </div>
+   </div>
+   <!-- END CONTAINER -->
+</div>
+
+<!-- BEGIN FOOTER -->
+<div class="page-footer">
+   <div class="page-footer-inner">
+       2014 © Metronic by keenthemes.
+   </div>
+   <div class="scroll-to-top" style="display: block;">
+      <i class="icon-arrow-up"></i>
+   </div>
+</div>
+<!-- END FOOTER -->

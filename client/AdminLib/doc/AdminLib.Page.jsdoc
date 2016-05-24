@@ -1,0 +1,19 @@
+/**
+ *
+ * Represent a page that can be displayed.
+ * The page must either :
+ *    - have a "handler" function that will be call when the page will be displayed
+ *    - have a model (and eventually an handler name) that will be displayed
+ *
+ * The model MUST have a default handler (or a handler correpsonding to the "handler" property value).
+ *
+ * The page CAN be associated to a menu entry. This is done by declaring the page to the menu entry itself.
+ * For a given menu, a page can be associated to only one entry.
+ *
+ * @name AdminLib.Page.Parameters
+ * @typedef {Object}
+ * @property {string}                   code    Code of the page. The code must be unique among all pages
+ * @property {string|function():string} url     URL of the page. If not defined, the the code will be used. In this case, all "." characters of the code will be replace by "/".
+ * @property {string}                   model   Model associated to the page. If not defined, then an handler function MUST be provided
+ * @property {function|string}          handler Name of the handler to use in the model or a function to use for displaying the page (only if no model provided).
+ */

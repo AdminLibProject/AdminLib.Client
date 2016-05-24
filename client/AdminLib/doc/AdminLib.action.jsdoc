@@ -1,0 +1,238 @@
+
+// ****************** AdminLib.Action ******************
+/**
+ * @name AdminLib.Action.Parameter
+ * @typedef {Object}
+ * @property {function():AdminLib.Action.pResult}         action                Action to execute
+ * @property {AdminLib.Action.Confirmation.Parameter}     confirmation          If defined, then a confirmation dialog box will be displayed to the user before executing the action.
+ * @property {boolean}                                   enabled               If false, the action will be disabled (displayed but not actionnable)
+ * @property {AdminLib.Action.Validation.Parameters.Like} validation            If defined, then a validation will be done before the action is executed.
+ * @property {boolean}                                   validateBeforeConfirm Default: true. If true, then the validation will be done before the user is asked to confirm his action.
+ */
+
+
+/**
+ * @name AdminLib.Action.pResult
+ * @typedef {AdminLib.Action.Result|Promise.<AdminLib.Action.Result>}
+ */
+
+/**
+ * @callback AdminLib.Action.Handler
+ * @returns {AdminLib.Action.pResult}
+ *
+ *
+ */
+
+/**
+ * @name AdminLib.Action.Result
+ * @mixes {AdminLib.type.Result}
+ * Object representing the result of an action
+ * If the action is successful, a toastr will be displayed with the given title and message.
+ * If the action has failed, a metronic alert will be displayed. In this case, the title will not be used.
+ *
+ * @property {string}  title    Title of the popup/toaster
+ * @property {boolean} silent   Default: false.
+ *
+ */
+
+// ****************** AdminLib.Action.Button ******************
+
+/**
+ * @name AdminLib.Action.Button.Parameters
+ * @typedef {Object}
+ * @mixes AdminLib.Action.Parameter
+ * @mixes AdminLib.Action.Button.BaseParameter
+ *
+ * Parameter taken by AdminLib.Action.Button objects.
+ * An action button is a button associated with a Action object.
+ *
+ * @property {function(Event): AdminLib.Action.pResult} action      Action to execute.
+ * @property {string}                                  class       Class of the button
+ * @property {string}                                  id          HTML ID of the button
+ * @property {string}                                  icon        Icon of the action
+ * @property {boolean}                                 inputButton Default: false. If true, then the button will be an INPUT button. Use this if you want to have a "file" button for example.
+ * @property {string}                                  label       Label of the action
+ * @property {Object.<string>}                         htmlDataset Values to apply in the dataset of the HTMLButtonElement
+ * @property {string}                                  sizeClass   Default: btn-default. Size class of the button
+ * @property {AdminLib.Action.Button.TYPE}              type        Default: {AdminLib.Action.Button.TYPE}. Type of button (button, file, link, ...)
+ */
+
+// ****************** AdminLib.Action.Confirmation ******************
+
+/**
+ * @name AdminLib.Action.Confirmation.Parameter
+ * @typedef {Object}
+ * @property {string}                              title
+ * @property {DOMElement}                          message
+ * @property {AdminLib.Action.Button.LikeParameter} validationButton
+ * @property {AdminLib.Action.Button.LikeParameter} cancelButton
+ */
+
+// ****************** AdminLib.Action.Validation ******************
+
+/**
+ * @name AdminLib.Action.Validation.Parameter
+ * @typedef {Object}
+ *
+ * Define the behavior on validation.
+ * When the validation is executed, the "validation" function is called.
+ * This function will be called with the same parameter provided to the action execution function.
+ * The function will have to return a AdminLib.Action.Validation.pResult function.
+ *
+ * The validation can return :
+ *    - a success (result = Datatable.VALIDATION_RESPONSE.success)
+ *    - a warning (result = Datatable.VALIDATION_RESPONSE.warning)
+ *    - an error  (result = Datatable.VALIDATION_RESPONSE.error)
+ *
+ * If the validation is successful and no title nor message is provided, then the flow will continue without displaying a dialog box to the user.
+ * In other case, a dialog box will be displayed. The message displayed in the dialog box can be personnalized. The "message" property of the validation result object
+ * can be a function. In this case, the function will receive all parameters provided to the action execution function, with one difference : the validation result object
+ * will be added at the end (it will be the last parameter). The return value can be either a DOM element or a string.
+ *
+ * You can choose to not display a modal (using the "silent" property of the validation result). In this case, you would have to materialized your self the error
+ * (eg. by displaying a red border around invalid elements) in the validation function.
+ *
+ * @property {AdminLib.Action.Button.LikeParameter}          cancelButton   Informations about the "cancel action" button
+ * @property {AdminLib.Action.Button.LikeParameter}          continueButton Informations about the "continue" button
+ * @property {boolean}                                      stopIfWarning  Default: False. If true, then the user will have the possibility to perform the action even if a warning is thrown.
+ * @property {AdminLib.Action.Validation.Parameter.Function} validation     Function to execute to validate the action.
+ *
+ */
+
+/**
+ * If the type is a AdminLib.Action.Validation.Parameters.Handler, then :
+ *    Equivalent of :
+ *       { validation : <AdminLib.Action.Validation.Parameters.Handler> }
+ *
+ *
+ * @name AdminLib.Action.Validation.Parameters.Like
+ * @typedef {AdminLib.Action.Validation.Parameters | AdminLib.Action.Validation.Parameters.Handler}
+ *
+ * */
+
+/**
+ * @callback AdminLib.Action.Validation.Parameters.Handler
+ * @returns {AdminLib.Action.Validation.Result.Like} Result of the validation
+ */
+
+/**
+ * If the type is a boolean :
+ *    Equivalent of :
+ *       { result : <boolean> ? AdminLib.Action.RESPONSE_TYPE.success : AdminLib.Action.RESPONSE_TYPE.error}
+ *
+ * If the type is a string :
+ *    Equivalent of :
+ *       { result  : AdminLib.Action.RESPONSE_TYPE.error
+ *       , message : <string>}
+ *
+ * @name AdminLib.Action.Validation.Result.like
+ * @typedef {AdminLib.Action.Validation.Result|boolean|string|Promise.<AdminLib.Action.Validation.Result.Like>}
+ *
+ */
+
+/**
+ * About result :
+ *
+ *    If the type is a boolean, then :
+ *       -  true  : equivalent of AdminLib.Action.RESPONSE_TYPE.success
+ *       -  false : equivalent of AdminLib.Action.RESPONSE_TYPE.error
+ *
+ * @name AdminLib.Action.Validation.Result
+ * @typedef {Object}
+ * @property {DOMElement}                           message Message to display in the dialog box.
+ * @property {AdminLib.Action.RESPONSE_TYPE|boolean} result  Result of the action. If "silent" = false, then an error or a warning will trigger a dialog box openning.
+ * @property {boolean}                              silent  Default: False. If true, then no dialog box will be displayed, even in case of error or warning. If "result" is a warning or an error, then the action will still not be performed
+ * @property {string}                               title   Title of the dialog box.
+ *
+ */
+
+/**
+ * @typedef {Object} SelectOption
+ * @property {string} value
+ * @property {string} label
+ *
+ */
+
+/**
+ * @callback fSelectOptions
+ * @param {Item} item
+ * @returns AdminLib.Parameters.ListOptionsLike
+ *
+ * Function that will be called for each item.
+ *
+ */
+
+/**
+ * @name AdminLib.Parameters.ListOptionsLike
+ * @typedef { AdminLib.Parameters.ListOptionsArray
+ *          | AdminLib.Parameters.ListOptionsObject
+ *          | Promise<AdminLib.Parameters.ListOptionsArray>
+ *          | Promise.<AdminLib.Parameters.ListOptionsObject>}
+ *
+ * */
+
+/**
+ * @name AdminLib.Parameters.ListOptionsArray
+ * @typedef {Array.<SelectOption|string>}
+ *
+ * Each item of the array describe an option.
+ * If an item is a string, the value of the option will be the index
+ * of the string, and the label the string it self.
+ *
+ * The coalesced versions contains only SelectOption values
+ *
+ */
+
+/**
+ * @name AdminLib.Parameters.ListOptionsObject
+ * @typedef {Object.<string>}
+ *
+ * Each element of the object (except functions) will be an option.
+ *    - Keys will be the value returned.
+ *    - Values will be the label displayed
+ *
+ * Note that order is can't be guaranted.
+ * Remember that in JavaScript, keys are strings. This means that if do something like that :
+ *
+ *    options = { 1: 'one'
+ *              , 2: 'two'
+ *              , 3: 'three' };
+ *
+ * then the value are :
+ *    ['1', '2', '3']
+ *
+ * and not :
+ *    [1, 2, 3]
+ *
+ */
+
+/**
+ * @name AdminLib.Action.Button.LikeParameter
+ * @typedef {AdminLib.Action.Button.BaseParameter|string}
+ *
+ * If string, then it will correspond to the label of the button.
+ *
+ */
+
+/**
+ * @name AdminLib.Action.Button.BaseParameter
+ * @typedef {Object}
+ *
+ * Parameters taken by Button objects.
+ * None of theses parameters are mandatory.
+ *
+ * @property {string} label
+ * @property {string} icon
+ * @property {string} class
+ */
+
+/**
+ *
+ * @name ItemOption
+ * @typedef {Object}
+ * @extend {SelectOption}
+ *
+ * @property {Item} item
+ *
+ *
+ */

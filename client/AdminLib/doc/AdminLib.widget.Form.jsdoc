@@ -1,0 +1,170 @@
+/**
+ * @name AdminLib.widget.Form.Parameters
+ * @typedef {Object}
+ *
+ * About fields:
+ * If the field is a string, then it will be a section title
+ *
+ * @property {AdminLib.widget.Form.Parameters.Action[]}        actions
+ * @property {Classes|number}                                 actionSizeClass Default: col-md-offset-3 col-md-9
+ * @property {string|AdminLib.widget.Form.Field.Parameters[]}  fields
+ * @property {string|AdminLib.Model}                           model          - Model to use to save the values of the form and
+ * @property {boolean}                                        horizontal     - Default: true
+ * @property {Classes|string}                                 inputSizeClass - Default: 'col-md-4'
+ * @property {Classes|string}                                 labelSizeClass - Default: 'col-md-3'
+ * @property {string}                                         sizeClass      - No default
+ * @property {string}                                         title
+ *
+ */
+
+/**
+ * @name AdminLib.widget.Form.Parameters.Action
+ * @typedef {Object}
+ * @extends {AdminLib.Action.Button.Parameters}
+ * @property {AdminLib.widget.Form.Parameters.Action.ActionCallback} action - Action to execute
+ */
+
+/**
+ * @callback AdminLib.widget.Form.Parameters.Action.ActionCallback
+ * @param {AdminLib.widget.Form}        form
+ * @param {AdminLib.widget.Form.Action} action
+ * @return {AdminLib.Action.pResult}
+ */
+
+/**
+ *
+ * Property "visible":
+ *
+ * Note that if the field is not visible, it will still be exported when using the "getValue"
+ * method of the form.
+ *
+ * About setValue :
+ *    If undefined, then the value on the form object will be set using the attribute.
+ *
+ * About attribute :
+ *    If undefined, and if "setValue" is undefined, then the value will be the code;
+ *
+ * @name AdminLib.widget.Form.Field.Parameters
+ * @typedef {Object}
+ * @property {string}                                     attribute
+ * @property {string}                                     code
+ * @property {boolean}                                    enabled           Default: true
+ * @property {*}                                          default           Default value taken by the field. This is the value that will be used when the form is reset
+ * @property {string}                                     helpText
+ * @property {string}                                     label
+ * @property {boolean}                                    nullable          Default: true
+ * @property {string}                                     placeholder
+ * @property {AdminLib.widget.Form.Parameters.Input}       input
+ * @property {AdminLib.widget.Form.Field.SetValueCallback} setValue          Function to use to set the value on the form object
+ * @property {AdminLib.widget.Form.Field.Style.Parameters} style
+ * @property {function(*):*}                              toFormDataValue
+ * @property {AdminLib.FIELD_TYPES|AdminLib.Model}          type
+ * @property {function(*):boolean}                        validation
+ * @property {*}                                          value             Initial value taken by the field
+ * @property {boolean}                                    visible           Default: true. Indicate if the field will be visible or not.
+ *
+ */
+
+/**
+ * @callback AdminLib.widget.Form.Field.SetValueCallback
+ * @param {Object}    formObject
+ * @param {*}         fieldValue
+ */
+
+/**
+ * @name AdminLib.widget.Form.Field.Style.Parameters
+ * @property {AdminLib.widget.Form.Field.Style.Input} input
+ * @property {AdminLib.widget.Form.Field.Style.Label} label
+ */
+
+/**
+ * @name AdminLib.widget.Form.Field.Style.Input
+ * @property {string|string[]} sizeClass
+ * @property {string|string[]} heightClass
+ *
+ *
+ */
+
+/**
+ * @name AdminLib.widget.Form.Field.Style.Label
+ * @property {string|string[]} sizeClass
+ * @property {boolean}         displayed
+ *
+ *
+ */
+
+/**
+ * @name AdminLib.widget.Form.Parameters.Input
+ * @typedef { AdminLib.widget.Form.Parameters.FieldType.Input
+ *          | AdminLib.widget.Form.Parameters.FieldType.ListBased
+ *          | AdminLib.widget.Form.Parameters.FieldType.Paragraph
+ *          | AdminLib.widget.Form.Parameters.FieldType.SelectItem
+ *          | AdminLib.widget.Form.FieldType.CodeEditor.Parameters}
+ *
+ *
+ */
+
+/**
+ * @name AdminLib.widget.Form.FieldType.CodeEditor.Parameters
+ * @typedef {Object}
+ * @property {AdminLib.CODE_LANGUAGE} language
+ */
+
+/**
+ * @name AdminLib.widget.Form.Parameters.FieldType.Paragraph
+ * @typedef {Object}
+ * @property {number} nbRows
+ *
+ */
+
+/**
+ * @name AdminLib.widget.Form.Parameters.FieldType.Input
+ * @typedef {Object}
+ * @property {*}  min
+ * @property {*}  max
+ *
+ *
+ */
+
+/**
+ * @name AdminLib.widget.Form.Parameters.FieldType.ListBased
+ *
+ * Property : equal
+ *    This function will be used to compare the two option's values.
+ *
+ * @typedef {Object}
+ * @property {function(Object, Object):boolean} equal    Function used to check if two values are equal.
+ * @property {boolean}                          multiple Default: False. Indicate if the one (false) or several (true) items are selectable in the list
+ * @property {SelectOptionsLike}                options  List of options in the list
+ *
+ *
+ */
+
+/**
+ * About source :
+ *    If "source" is a string, then the source will be the default handler of the corresponding model.
+ *    If "source" is a model, then the source will be the default handler of the model.
+ *
+ *
+ * @name AdminLib.widget.Form.Parameters.FieldType.SelectItem
+ * @extend AdminLib.widget.Form.Parameters.Field
+ * @property {ApiFilters|function():ApiFilters}       apiFilters
+ * @property {AdminLib.EqualFunction}                 equal           Function to compare items. This is used for selectableItems when it's an array
+ * @property {string[]}                               fields          List of fields to display. If undefined, then will display all fields of the default handler of the source
+ * @property {AdminLib.widget.Datatable.Link.Enabled} selectableItems Determine the list of items selectable
+ * @property {AdminLib.Model|AdminLib.Model.Handler}  source
+ * @property {string}                                 title           Title of the modal
+ */
+
+/**
+ * @name AdminLib.FieldType
+ * @enum
+ */
+
+/**
+ * @name CheckboxParameters
+ * @typedef {Object}
+ * @extends AdminLib.widget.FieldParameters
+ * @property {SelectOptionsLike} options
+ *
+ */

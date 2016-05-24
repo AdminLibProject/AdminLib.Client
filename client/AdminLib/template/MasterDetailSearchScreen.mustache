@@ -1,0 +1,58 @@
+{{!
+
+   [root]
+      - {Field[]} fields List of fields to display
+
+   [Field]
+      - {string}   code
+      - {number}   fieldIndex Index of the field
+      - {string}   label
+      - {boolean}  inputMode
+      - {boolean}  selectMode
+      - {string}   type        inputMode only. Type of field. The value should be an acceptable value for "type" attribute of the HTML "INPUT" element.
+      - {string}   placeholder inputMode only. Placeholder to display in the input field
+      - {number}   min         inputMode only. Minimum value acceptable of the field
+      - {number}   max         inputMode only. Maximum value acceptable for the field
+      - {Option[]} options     selectMode only. List of options available.
+
+   [Option]
+      - {string} value
+      - {string} label
+}}
+
+<form class="form-horizontal" role="form">
+
+    <div class="form-body">
+        {{#fields}}
+        <div class="form-group" data-fieldIndex="{{fieldIndex}}">
+            <label for="input{{code}}" class="col-md-3 control-label">{{label}}</label>
+            <div class="col-md-4">
+                {{#inputMode}}
+                    <input type="{{type}}" class="form-control" id="input{{code}}" placeholder="{{placeholder}}" min="{{min}}" max="{{max}}"/>
+                {{/inputMode}}
+
+                {{#selectMode}}
+                    <select id="input{{code}}" class="form-control">
+
+                    <option value="-2" selected disabled class="placeholder">{{placeholder}}</option>
+
+                    {{#nullable}}
+                        <option value="-1"></option>
+                    {{/nullable}}
+
+                    {{#options}}
+                        <option value="{{index}}">{{label}}</option>
+                    {{/options}}
+
+                    </select>
+                {{/selectMode}}
+                <div class="help-block">{{helpText}}</div>
+            </div>
+        </div>
+
+        {{/fields}}
+
+    </div>
+    <div class="form-actions"></div>
+
+</form>

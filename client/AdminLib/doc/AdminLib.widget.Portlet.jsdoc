@@ -1,0 +1,33 @@
+/**
+ * Property buttons :
+ *
+ * Note that the action will receive as first parameter the action
+ *
+ * @typedef {Object} AdminLib.widget.Portlet.Parameters
+ * @property {AdminLib.element.Button.Parameters[]}     buttons
+ * @property {string}                                  classes
+ * @property {AdminLib.widget.Portlet.Collapse|boolean} collapse
+ * @property {string}                                  font           Default: "font-red-sunglo bold". Font that will be apply both to the icon and the title
+ * @property {boolean}                                 headerCollapse Default: false. If true, then the user will be able to collapse/expand the portlet by clicking  on the header
+ * @property {string}                                  icon           Icon to display left to the title
+ * @property {string}                                  sizeClass      Default: col-md-12. Size classe of the portlet
+ * @property {string}                                  title          Title of the portlet
+ */
+
+/**
+ * Property enabled :
+ *    If false, then the portlet will still be collapsable using the programming API. However, no CSS will be added to mark the
+ *    portlet as collapsable.
+ *
+ * @name AdminLib.widget.Portlet.Collapse
+ * @typedef {Object}
+ * @property {boolean} enabled        Default: true. If true, then the portlet will be collapsable
+ * @property {boolean} header         Default: true. If true, then the user will be able to collapse the portlet by clicking on the header
+ * @property {boolean} startCollapsed Default: false. If true, then the portlet will start collapsed.
+ *
+ */
+
+/*
+ * @property {boolean}                             collapsed      Default: false. If true, then the portlet will be displayed as collapsed.
+
+   */

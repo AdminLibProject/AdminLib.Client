@@ -1,0 +1,19 @@
+/**
+ * @callback AdminLib.callback.getItemLabel
+ * @param {Item} item
+ * @returns {string}
+ *
+ */
+
+/**
+ * @callback AdminLib.callback.getItemClasses
+ * @param {Item} item
+ * @returns {Classes}
+ *
+ */
+
+/**
+ * @callback AdminLib.EventListener
+ * @param {Event} event
+ *
+ */

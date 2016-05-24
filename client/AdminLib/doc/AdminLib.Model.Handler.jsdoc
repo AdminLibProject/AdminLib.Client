@@ -1,0 +1,186 @@
+/**
+ * @name AdminLib.Model.Handler.Parameters
+ * @typedef {Object}
+ *
+ * Property : getAPIValue
+ *
+ *    If not defined, then the "getValue" function will be used.
+ *
+ * Property : getItemLabel
+ *
+ * If the value is a string, then it will be used as an attribute name : the item label will be the value of the attribute of the item.
+ *
+ * Example :
+ *    item : {name: 'test'}
+ *
+ *    getItemLabelFunction : 'name'
+ *
+ * @typedef {Object}
+ * @property {AdminLib.Parameter.WidgetActionButton[]}              actions          List of all actions declared.
+ * @property {string}                                              api
+ * @property {string}                                              code
+ * @property { AdminLib.widget.Datatable.Parameters.Create
+             | AdminLib.widget.Datatable.Parameters.CreateFunction} create
+ * @property {DeleteParameters|DeleteFunction}                     delete
+ * @property {AdminLib.widget.Datatable.EditAction.Like}            edit             Default: False. Indicate if the rows editable.
+ * @property {string[]}                                            extraFields      List of extrafields that will be displayed on list screen
+ * @property {AdminLib.Model.Handler.Field.Parameters[]}            fields
+ * @property {object}                                              filters
+ * @property {AdminLib.Model.Handler.ItemAction[]}                  itemActions      List of actions disponible.
+ * @property {string}                                              itemType         Label of the type of item.
+ * @property {string}                                              itemType_plural  Plural label of the type of item.
+ * @property {getItemLabelFunction|string}                         getItemLabel     Default: 'label'.
+ * @property {function(Item):string}                               getItemURL       Function returning the URL of an item. If not defined, then item will not have URL's.
+ * @property {string[]}                                            includeApiFields List of API fields name to include in all queries. Usefull for example to retreive the ID but without displaying it
+ * @property {string[]}                                            listActions      Name of the actions that will be displayed on list screen.
+ * @property {string[]}                                            listFields       List of fields to display in the list screen (in the order of the list). If not defined, all fields will be displayed (in the order they have been provided)
+ * @property {string|number|Array.<string|number>}                 initialOrder     Default: [+0]. If define, then the selected column will be used to order the data
+ * @property {number}                                              pageLength       Default page length for lists. See AdminLib.widget.Datatable.Parameters.pageLength
+ * @property {string[]}                                            searchField      List of field to use for the search screen. If not defined, then all searchable field will be used.
+ * @property {boolean}                                             searchFirst      Default: True. Useful only if searchScreen=true. If true, then the first screen will be the search screen.
+ * @property {boolean}                                             searchScreen     Default: False. If true, then the search screen will be enabled.
+ * @property {HistoryStateProvider}                                state            State to save when the view is displayed
+ * @property {string}                                              storeName        Store name that will be use for datatables
+ * @property {AdminLib.widget.Datatable.Style.Parameters}           listStyle        Style of the datatable (only applied for listview
+ * @property {string[]}                                            summaryFields    Fields to display when summary list is displayed
+ * @property {string[]}                                            summaryActions   List of actions to displaye on list screen.
+ * @property {function(Item):string}                               toApiValue       Return the value to use for API calls (eg. filtering).
+ * @property {AdminLib.Page}                                        page
+ * @property {AdminLib.Model.Handler.View.Parameter[]}              views            List of views displayable
+ */
+
+/**
+ * @name AdminLib.Model.Handler.ItemAction
+ * @extends {AdminLib.widget.Datatable.RowAction.Parameter}
+ * @property {boolean} individual Default: false. If true, then the item will be displayed as a button
+ *
+ */
+
+/**
+ * @name AdminLib.module.ListDetail.List.Parameters
+ * @typedef {Object}
+ * @property {number}                                    pageLength
+ * @property {AdminLib.widget.Datatable.Style.Parameters} style
+ *
+ *
+ */
+
+/**
+ * @name ItemActionConfirmation
+ * @typedef {Object}
+ * @property {string}                title
+ * @property {function(Item):string) getItemLabel
+ * @property {string}                [message]      Confirmation message (default: "Confirm action of thoses items :")
+ *
+ */
+
+/**
+ * @name AdminLib.Model.Handler.Field.Parameters
+ *
+ * Property : fromJSON
+ *    The function will received the value parsed by the JSON.parse function.
+ *    This will be useful for example for dates : JSON format don't handle date format and consider them as simple string.
+ *
+ * @typedef {Object}
+ * @extends {AdminLib.widget.Datatable.Field.Parameters}
+ * @property {string|boolean}                               api             : If a string, then correspond to the field to retreive from the api. If true, then the code will be used. If false, then no call is done : another source must be provided
+ * @property {function(*):*}                                fromJSON        : Function to use to convert the JSON value that have been received to the javascript value.
+ * @property {AdminLib.Model.Handler.Field.SearchStringLike} getSearchString : Function that will return the search string to use for queries
+ * @property {boolean}                                      linkToItem      : Default: False. If true, then the field will link to the detail screen.
+ * @property {boolean}                                      primaryKey      : Default: False. If true, then the field is part of the primary key. A primary key is not editable.
+ */
+
+/**
+ * @name AdminLib.Model.Handler.Field.SearchStringLike
+ * @typedef {string|AdminLib.Model.Handler.Field.getSearchStringCallback}
+ *
+ * If the value is a string, then it will be used as an attribute name of the value.
+ *
+ */
+
+/**
+ * @callback AdminLib.Model.Handler.Field.getSearchStringCallback
+ * @param {*} value
+ * @return {string}
+ *
+ *
+ */
+
+/**
+ * @name getItemLabelFunction
+ * @typedef {function(Object):string|function(Object):Promise.<string>}
+ */
+
+/**
+ * @name HistoryStateProvider
+ * @typedef {HistoryState|function(Item):HistoryState}
+ */
+
+
+/**
+ * @name CreateParameterObject
+ * @typedef {Object}
+ * @property {string} label                 Label of the button that create that will trigger the creation
+ * @property {string} class                 Class of the button
+ * @property {string} icon
+ * @property {function(Item):pActionResult} Function to call that will handle the item creation
+ *
+ */
+
+/**
+ * @name CreateParameter
+ * @typedef {function(Item):pActionResult|CreateParameterObject}
+ */
+
+
+/**
+ * @name AdminLib.Model.Handler.View.Parameter
+ * @typedef {Object}
+ *
+ * @property {string}                                     code
+ * @property {boolean|function([Item]):boolean}           enabled     Default: true;
+ * @property {Object|function|string|Promise}             data
+ * @property {AdminLib.Model.Handler.View.HandlerCallback} handler     Function to call once the view is displayed. The parameters are the DOM created and the previously data retreived
+ * @property {string}                                     label
+ * @property {string[]}                                   modules
+ * @property {string[]}                                   scripts
+ * @property {HistoryStateProvider}                       state       - State to save when the view is displayed
+ * @property {string[]}                                   stylesheets
+ * @property {string}                                     template
+ * @property {function():object}                          proceedData
+ */
+
+/**
+ * @callback AdminLib.Model.Handler.View.HandlerCallback
+ * @param {HTMLElement} dom   DOM in wich the handler must add it's elements to be displayed
+ * @param {Object}      data  Data returned by the "getData" function
+ * @param {Item}        item  Selected item
+ *
+ *
+ */
+
+/**
+ * @name AdminLib.module.MasterDetailSection.Parameters.getForm
+ * @typedef {Object}
+ * @property {string[]} fields          List of fields to display in the form. If undefined, then will display all searchable fields
+ * @property {string}   inputSizeClass  Default: col-md-4. Size of the input
+ * @property {Item}     item
+ * @property {string}   labelSizeClass  Default: col-md-3. Size of the label
+ * @property {string}   title           Title of the form
+ *
+ */
+
+/**
+ * @name SearchScreenParameters
+ * @typedef {Object}
+ * @property {boolean|string|AdminLib.Parameter.ButtonLike} cancelButton - Default: False. If false, then no cancel button will be provided
+ * @property {boolean}                                     modal        - Default: False. If true, then the search screen will be displayed in a modal.
+ * @property {boolean}                                     autoHide     - Default: False. If true, then the search screen will hide immediatly after the user had submit his search.
+ *
+ * About : cancelButton
+ *    Indicate if a cancel button should be provided or not (false).
+ *    If the value is a string, then the value will be the label of the button.
+ *
+ *    Note : when the user will press the cancel button, the SearchScreen promise will be resolved and return "undefined".
+ *
+ */

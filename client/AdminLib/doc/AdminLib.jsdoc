@@ -1,0 +1,197 @@
+/**
+ * @name Item
+ */
+
+/**
+ * @name AjaxActionResult
+ * @typedef {AdminLib.Result}
+ * @property {number}  status     Status number of the response
+ * @property {string}  statusText Text of the response
+ * @property {Object}  data
+ *
+ */
+
+/**
+ * @name AdminLib.type.Result
+ * @typedef {Object}
+ *
+ * @property {boolean}            success  Indicate if the action was successful (true) or not (false)
+ * @property {string|HTMLElement} message  Message to display. If the action was successful, a popup will be disaplayed. The message can contain HTML tags.
+ *
+ */
+
+/**
+ * @name SelectOptionsLike
+ * @typedef {Array<{label:string, value:*}>|Promise.<SelectOptionsLike>|Object.<*>}
+ *
+ *
+ */
+
+/**
+ * @callback AdminLib.Parameters.getItemLabelCallback
+ * @param {Item}
+ * @returns {string}
+ *
+ */
+
+/**
+ * @name ItemOption
+ * @typedef {Object}
+ * @extend {SelectOption}
+ *
+ * @property {Item} item
+ *
+ *
+ */
+
+/**
+ * @name AdminLib.Link.Parameters
+ * @typedef {Object}
+ *
+ * @property {AdminLib.widget.Datatable.Link.Enabled}         enabled  If false, link will be disable for all items of the field.
+ * @property {string|AdminLib.widget.Datatable.Link.Handler}  handler
+ * @property {string|AdminLib.Model}                          model
+ * @property {string|AdminLib.widget.Datatable.Link.GetUrl}   url
+ *
+ */
+
+/**
+ * @name AdminLib.widget.Datatable.Link.EnabledCallback
+ * @returns {boolean}
+ */
+
+/**
+ * @name AdminLib.Link.Parameters.Like
+ * @typedef { AdminLib.Link.Parameters
+ *          | AdminLib.Link.Handler
+ *          | string
+ *          | boolean }
+ *
+ * If string :
+ *    Then the it will be use for the URL of the link
+ *
+ * If boolean :
+ *    - If false : No link
+ *    - If true : a link will be created to the model that have been provided at datatable level. A model MUST have been provided
+ *
+ */
+
+/**
+ * @callback AdminLib.Link.Handler
+ * @param {Item} item
+ */
+
+/**
+ * @name AdminLib.Equal
+ * @typedef {AdminLib.EqualFunction|string}
+ */
+
+/**
+ * @callback AdminLib.EqualFunction
+ * @param {Item} item1
+ * @param {Item} item2
+ * @returns {boolean}
+ */
+
+/**
+ * @name AdminLib.IncludeList
+ * @typedef {Array}
+ * @property {boolean}               include Default: true. If false, then the elements in the list will be excluded
+ *
+ */
+
+/**
+ * @name AdminLib.widget
+ * @interface
+ * @method getDOM
+ *
+ *
+ */
+
+/**
+ * @name AdminLib.Event.Parameters
+ * @typedef {Object}
+ * @property {boolean} bubble
+ * @property {boolean} cancellable
+ * @property {*}       detail
+ * @property {*}       target
+ *
+ */
+
+/**
+ * @name AdminLib.Package.Parameters
+ * @typedef {Object}
+ * @property {string[]} packages
+ * @property {string[]} scripts
+ * @property {string[]} stylesheets
+ * @property {string[]} templates
+ *
+ */
+
+/**
+ * @name AdminLib.DomLike
+ * @typedef {HTMLElement | string | AdminLib.GetDomInterface | Promise.<AdminLib.DomLike>}
+ *
+ *
+ */
+
+/**
+ * @name AdminLib.GetDomInterface
+ * @interface
+ */
+
+/**
+ * @function
+ * @name AdminLib.GetDomInterface#getDom
+ * @returns {AdminLib.DomLike}
+ *
+ */
+
+
+/**
+ * Type: AdminLib.AsyncStringLike
+ *
+ * The value be used as the message of the error.
+ *
+ *
+ * @name AdminLib.Error.Parameters.Like
+ * @typedef {AdminLib.Error.Parameters|AdminLib.AsyncStringLike>}
+ *
+ */
+
+/**
+ * @name AdminLib.Error.Parameters
+ * @typedef {Object}
+ * @property {string|function}         action   Action to execute if the user click on the error popup
+ * @property {AdminLib.AsyncStringLike} message  Message of the error to display
+ * @property {boolean}                 silent   Default: False. If false, then the error will not be displayed
+ * @property {AdminLib.AsyncStringLike} title    Title of the error message
+ *
+ */
+
+/**
+ * @name AdminLib.AsyncStringLike
+ * @typedef {string|function:AsyncStringLike|Promise.<AsyncStringLike>}
+ *
+ */
+
+/**
+ * @name AdminLib.AsyncDOMLike
+ * @typedef {HTMLElement|string|AdminLib.GetDomInterface|function:AsyncDOMLike|Promise.<AsyncDOMLike>}
+ *
+ */
+
+
+/**
+ *
+ * About : keepAlive
+ * The default value depend on the autocommit property :
+ *    - if autocommit = false, then the value will be true.
+ *    - if autocommit = true, then th evalue will be false.
+ *
+ * @name AdminLib.Connection.Parameters
+ * @typedef {Object}
+ * @property {boolean} autocommit Default: false. If true, then the data will be automatically be commited
+ * @property {function} onerror   Function to use to handle transaction errors
+ */
+

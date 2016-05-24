@@ -1,0 +1,7 @@
+/**
+ * @name AdminLib.element.Button.Parameters
+ * @typedef {Object}
+ * @mixes AdminLib.Action.Button.Parameters
+ *
+ * @property {string} code Code of the button
+ */

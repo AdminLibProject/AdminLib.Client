@@ -1,0 +1,768 @@
+/**
+ *
+ * Property: edition
+ *    If you had declare the datatable editable, an extra column will be added at the end of the table, with
+ *    an "Edit" button on each row.
+ *
+ *    By default, the original item will be replaced by the edited item in the datatable. Also, the fields of the
+ *    edited item will be used to populate the corresponding fields in the datatable.
+ *    You can change this behavior by providing a item inside the save result object( property : "item"). In this
+ *    case, it's the provided item that will be used.
+ *    This can be useful for example when the edited item has not exactly the format that you expected. For example,
+ *    you may want that fields has only lowercase characters.
+ *
+ * Property: fixOnSelect
+ *    If true, then each time a row is selected, then the row will also be fixed.
+ *    If the row is unselected, then it will be released.
+ *    Note that the contrary is not true : if a row is fixed/released (using the "fix"/"releases" methods), then it's will not be selected
+ *
+ * Property: initialOrder
+ *    If the value is a "true", then the first orderable field will be ordered ascendently. If no orderable field, then nothing is done.
+ *    If the value is a string, then it must correspond to a field code.
+ *    If the value is a number, then it will correspond to the index of a field (starting by 0).
+ *
+ *    You can define the sens of the order by adding "+" or "-" before you column :
+ *
+ *       +id   ==> ASC sort on "id" field
+ *       -0    ==> DESC sort on the first field
+ *
+ *    Note : the field must be orderable
+ *    Note : remember that in Javascript -0 exists. The function will be able to make the difference between +0 and -0.
+ *
+ * Property: link
+ * By default, the clicableCell property of the link will be true.
+ * This means that rows will not display an ANCHOR link but they will be entirely clicable.
+ *
+ * Field can still defined personnal links : they will override the link configuration at table level.
+ *
+ * Property: paging
+ * If false, then the paging will be disable.
+ * If true, then the parameter will act as the "pagingType" parameter
+ * of the datatable.net plugin (see http://datatables.net/reference/option/pagingType).
+ *
+ *
+ * Property: selectable
+ *    The "selectable" property can't be  false if there rowActions and/or if items are deletable.
+ *
+ * @name AdminLib.widget.Datatable.Parameters
+ * @typedef {Object}
+ * @property {AdminLib.widget.Datatable.Parameters.ChildRow[]}                 childRows       List of child row to display bellow the extrafield.
+ * @property {AdminLib.widget.Datatable.Parameters.CreationParameters}         create          Default: False. Function to use to save created items.
+ * @property {Item[]}                                                         data            Data to display
+ * @property {AdminLib.widget.Datatable.DeleteAction.Like}                     delete          Function to use to delete items.
+ * @property {AdminLib.widget.Datatable.EditAction.Like}                       edit            Default: False. Indicate if the rows editable.
+ * @property {string[]}                                                       [extraFields]   List of fields that will be displayable only if the user expand the row. Extra fields can't be also table fields.
+ * @property {AdminLib.widget.Datatable.Field.Parameters[]}                    fields          Fields to display in the datatable
+ * @property {boolean}                                                        filter          Indicate if the filter input should be displayed or not
+ * @property {boolean}                                                        fixOnSelect     Default: false. If true, then the rows will be automatically fixed when selected
+ * @property {AdminLib.widget.Datatable.Link.Parameters}                       link
+ * @property {AdminLib.Parameters.getItemLabelCallback}                        getItemLabel    Return the label of an item.
+ * @property {AdminLib.widget.Datatable.Parameters.getRowClassCallback}        getRowClass     Return the class of the row
+ * @property {AdminLib.widget.Datatable.Parameters.Language}                   language
+ * @property {number|Array.<number[],string[]>}                               lengthMenu      Default: [10,25,50,100]]. See http://datatables.net/reference/option/lengthMenu for more details.
+ * @property {AdminLib.widget.Datatable.Link.Parameters.Like}                  link            If defined, then a link display a link
+ * @property {boolean}                                                        manualOrder     Default: false. Indicate if the user can be manually reordered by the user or not
+ * @property {AdminLib.Model|string}                                           model
+ * @property {number}                                                         pageLength      Default: 10. See http://datatables.net/reference/option/pageLength
+ * @property {boolean|string}                                                 paging          Default: true. See http://datatables.net/reference/option/paging and http://datatables.net/reference/option/pagingType
+ * @property {string|number|Array.<string|number>}                            initialOrder    Default: true. If define, then the selected column will be used to order the data
+ * @property {Array<AdminLib.widget.Datatable.RowAction.Parameters|undefined>} rowActions      Define row level actions. To define a separator, juste add an "undefined" value
+ * @property {AdminLib.widget.Datatable.RowAction.Parameters[]}                rowButtons      Define buttons to add on each row.
+ * @property {AdminLib.widget.Datatable.Parameters.RowValidationCallback}      rowValidation
+ * @property {boolean}                                                        selectable      If true, then the items will be selectable, even if no row actions provided (useful for onselect event). MUST be true (or undefined) if delete=true
+ * @property {AdminLib.widget.Datatable.SelectableItemsType}                   selectedItems   Default: []. List of items (or item indexes) who will be initialiy selected
+ * @property {string}                                                         sizeClass
+ * @property {AdminLib.widget.Datatable.Parameters.Style}                      style
+ * @property {string}                                                         storeName       If defined, then this will be the name to use for storing the data of the table (such as fields length) in the local storage
+ * @property {string|string[]}                                                tableClass      List of classes to apply on the <TABLE> element.
+ * @property {AdminLib.Action.Button.Parameter[]}                              tableActions
+ * @property {string[]}                                                       [tableFields]   Default: All fields. List of fields to display directly in the table. Table fields can't be also extra fields.
+ * @property {AdminLib.widget.Datatable.Validation.Handler}                    validation      Function to use to validate new values after edition of a row. Usefull only for editable rows
+ *
+ */
+
+/**
+ * @name AdminLib.widget.Datatable.SelectableItemsType
+ * @type {Array.<Item|number>|AdminLib.widget.Datatable.SelectableItemsTypeCallback}
+ *
+ */
+
+/**
+ * @callback AdminLib.widget.Datatable.SelectableItemsTypeCallback
+ * @param {Item}   item Item for wich we want to determine if it's selectable or not
+ * @param {Item[]} data List of all items
+ * @returns {boolean} If true, then the item will be selectable
+ */
+
+/**
+ * @name AdminLib.widget.Datatable.ChildRow
+ * @typedef {HTMLElement|function(item):HTMLElement|function(item):Promise.<HTMLElement>}
+ */
+
+/**
+ * @callback AdminLib.widget.Datatable.Parameters.RowValidationCallback
+ * @param {Item} item
+ * @returns {boolean}
+ *
+ */
+
+/**
+ * @name AdminLib.widget.Datatable.Parameters.CreateLike
+ *
+ * @typedef { AdminLib.widget.Datatable.Parameters.Create
+ *          | AdminLib.widget.Datatable.Parameters.CreateFunction
+ *          | string
+ *          | boolean}
+ *
+ *
+ */
+
+/**
+ *
+ *
+ * Property : dependencies
+ *    If true, then the value and options will be updated each time the item will be changed.
+ *    You can indicate a field or a list of fields of wich the current field depends.
+ *
+ * Property : editable
+ *    If the editable value is not provided, then the default value will be :
+ *       - "true" if an "attribute" or "setValue" function has been provided
+ *       - "false" otherwise.
+ *
+ * Property : getOrderValue
+ *    Use this property to define you own order. This function will receive as first parameter the value of the field
+ *    and in second the item. The returned value will be used to sort values.
+ *
+ * @name AdminLib.widget.Datatable.Field.Parameters
+ * @extends AdminLib.widget.Datatable.Parameters.BaseField
+ * @typedef {Object}
+ * @property {AdminLib.widget.Datatable.Field.ClicableCell}   clicableCell    Default: false. If true, then the whole cell is clicable. If false, then only the value is clicable, by a link.
+ * @property {boolean}                                       creatable       Default: "editable" value (if datatable is creatable). If true, then the field will be editable on create mode.
+ * @property {*}                                             default         Default value of the field. Used only during edition/creation as default field value.
+ * @property {boolean|string[]}                              dependencies    Default: false. Indicate the dependencies of the values and options
+ * @property {boolean}                                       editable        Default: true. Indicate if the field is editable or not. Useful only if "editable" parameter is true at datatable level
+ * @property {AdminLib.widget.Form.Parameters.Input}          inputParameters Parameters of the for edit/create fields. See inputType
+ * @property {AdminLib.FIELD_TYPE}                            inputType       Default: AdminLib.FIELD_TYPE.AUTO. Type of form to use for edition
+ * @property {string}                                        helpText        Help text of the input (Edit mode only).
+ * @property {AdminLib.widget.Datatable.Field.GetValue}       getValue        Function that will return the value of the field for an item
+ * @property {AdminLib.widget.Datatable.Link.Like}            link            Default: false.
+ * @property {boolean}                                       nullable        Default: true. If true, then edition mode will allow a null value for the field
+ * @property {function(SelectOption, Item):boolean}          optionFilter    If defined, then will be used to filter the list of options usable each time the item change.
+ * @property {string}                                        placeholder     Default: Label value. Placeholder of the input that will be displayed on edit mode
+ * @property {function(Item, *)}                             setValue        If defined, this function will be used to defined the value inside the item
+ * @property {function(string, Item):pFieldValidationMessage validation      Function that will validate the field on edition. Usefull only on editable fields.
+ *
+ */
+
+/**
+ * @name AdminLib.widget.Datatable.Field.ClicableCell
+ * @typedef {boolean|AdminLib.widget.Datatable.Field.ClicableCellCallback}
+ *
+ */
+
+/**
+ * @callback AdminLib.widget.Datatable.Field.ClicableCellCallback
+ * @param {Item}                         item
+ * @param {AdminLib.widget.Datatable.Row} row
+ * @returns {boolean}
+ *
+ */
+
+/**
+ * @name AdminLib.widget.Datatable.Link.Like
+ * @typedef { AdminLib.widget.Datatable.Link.Parameters
+ *          | AdminLib.widget.Datatable.Link.Handler
+ *          | string
+ *          | boolean }
+ *
+ * If string :
+ *    Then the it will be use for the URL of the link
+ *
+ * If boolean :
+ *    - If false : No link
+ *    - If true : a link will be created to the model that have been provided at datatable level. A model MUST have been provided
+ *
+ */
+
+/**
+ *
+ * About useValue :
+ *
+ *
+ *
+ * @name AdminLib.widget.Datatable.Link.Parameters
+ * @typedef {Object}
+ * @mixes {AdminLib.Link.Parameters}
+ *
+ * @property {AdminLib.widget.Datatable.Link.Enabled}        enabled     If false, link will be disable for all items of the field.
+ * @property {function(Item,Item):boolean}                  equal       Use to compare two items. This function is used to compare items in the enabledList
+ * @property {string|AdminLib.widget.Datatable.Link.Handler} handler
+ * @property {string|AdminLib.Model}                         model
+ * @property {string|AdminLib.widget.Datatable.Link.GetUrl}  url
+ * @property {boolean}                                      useValue    Default: false. Indicate if the link should use the value of the field or the row item
+ *
+ */
+
+/**
+ * @name AdminLib.widget.Datatable.Link.Enabled
+ * @typedef {boolean|AdminLib.widget.Datatable.Link.EnabledCallback|AdminLib.widget.Datatable.Link.IncludeList}
+ *
+ */
+
+/**
+ * @name AdminLib.widget.Datatable.Link.IncludeList
+ * @typedef {Array.<Item|number>}
+ * @mixes AdminLib.IncludeList
+ */
+
+/**
+ * Indicate if the given link is clicable or not
+ *
+ * @callback AdminLib.widget.Datatable.Link.EnabledCallback
+ * @param {Item}                          item
+ * @param {AdminLib.widget.Datatable.Link} link
+ * @returns {boolean}
+ */
+
+/**
+ * @name AdminLib.widget.Datatable.Parameters.BaseField
+ * @typedef {Object}
+ *
+ * This type define a field displayable in a datatable. This type will not define any behavior options such
+ * as creatability, linking, etc...
+ *
+ * Property : attribute
+ *    If no value provided and if "setValue" is undefined, then the value will be the value of the "code" property
+ *
+ * Property : formatValue
+ *    This property will be used to format the value to make it displayable as text.
+ *
+ *    If formatValue is a function :
+ *       The function t will receive the value of the field as parameter
+ *       The function will have to handle the case where the value is undefined.
+ *
+ *    If formatValue is a string :
+ *
+ *       It will be used as an attribute name.
+ *          Example :
+ *             for an item such as :
+ *
+ *                item : {code: 'CODE', label: 'A label'}
+ *
+ *             and a formatValue such as :
+ *                formatValue : 'label'
+ *
+ *             Then the displayed value will be :
+ *
+ *                'A label'
+ *
+ *       If the value is undefined, then the formated value will be undefined to, and nothing will be displaye.
+ *
+ *
+ * Property : getOrderValue
+ *    Use this property to define you own order. This function will receive as first parameter the value of the field
+ *    and in second the item. The returned value will be used to sort values.
+ *
+ * Property : options
+ *    You can provide either a list of options, a promise returning a list of options.
+ *    The "formatValue" function will be used on :
+ *       - Options who don't have a "label" property. The value of the option will be provided to the function
+ *       - Option that are not objects.
+ *
+ *    If "formatValue" is not provided, then the string representation of the value will be used (using "toString" function)
+ *
+ *    Example :
+ *       Options : [1, {value: 2}, {value: 3, label: 'three'}]
+ *       formatValue : function(value) { return ['un', 'dos', 'tres'][value] };
+ *
+ *       labels :
+ *          - un
+ *          - dos
+ *          - three
+ *
+ *
+ * @property {string}                                        attribute       Attribute to retrieve for the object. If not defined, then the code is used instead.
+ * @property {string}                                        code            Code of the field
+ * @property {function(Item, Item):boolean}                  equal           Function that will be use to compare two items and determine if they are equal or not
+ * @property {AdminLib.DATA_TYPE}                             dataType        Type of data
+ * @property {function(*):string|string}                     formatValue     Function to use to format a value before it's displayed.
+ * @property {function(Object):string}                       getValue        If defined, then will be use to retrieve the value from an item
+ * @property {function(*, Item):string}                      getOrderValue   Return the value to use for ordering.
+ * @property {string}                                        label           Default: Code value. Label of the field.
+ * @property {AdminLib.Parameters.ListOptionsLike}            options         If defined, then edition mode will display a select box (with given value) for the field.
+ * @property {boolean}                                       orderable       Default: true. Indicate if the column can be ordered or not
+ * @property {Classes|function(Item):Classes}                textClasses     Classes to apply to the text.
+ * @property {boolean}                                       visible         Default: true. Indicate if the field should be visible (true) or not (false).
+ *
+ */
+
+/**
+ *
+ * Type string :
+ *    If the type is a string, then it will be used as an attribute name.
+ *
+ *    For example :
+ *
+ *       parameters = {getValue : 'code'};
+ *
+ *       item     = {code: 'Test'}
+ *       value    = item[getValue] // test
+ *
+ *
+ * @name AdminLib.widget.Datatable.Field.GetValue
+ * @typedef {string|AdminLib.Field.GetValueCallback}
+ *
+ */
+
+/**
+ * @callback AdminLib.widget.Datatable.Field.GetValueCallback
+ * @param {Item}                           item
+ * @param {AdminLib.widget.Datatable.Field} field
+ * @returns {*}
+ */
+
+/**
+ * @callback AdminLib.widget.Datatable.Parameters.getRowClassCallback
+ * @param {Item}
+ * @returns {Classes}
+ *
+ */
+
+/* ******************** Create ******************** */
+
+/**
+ * @name AdminLib.widget.Datatable.Parameters.Create
+ * @typedef {Object}
+ *
+ * @property {AdminLib.Action.Button.LikeParameter}                       cancelButton    Default: "Cancel". Button or label of the "Cancel" button.
+ * @property {AdminLib.Action.Confirmation.Parameter}                     confirmation    No default.
+ * @property {AdminLib.Action.Button.LikeParameter}                       createButton    Default: "New". Button or label of the "New" button
+ * @property {boolean}                                                   enabled         Default: true.
+ * @property {boolean}                                                   fieldValidation Default: True. If true, each field will also have to validate the item (using the "validate" function).
+ * @property {CreateFunction}                                            handler         Function to execute to create the item. The function will receive in parameter the created item
+ * @property {AdminLib.Action.Button.LikeParameter}                       saveButton      Default: "Save". Button or label of the save button.
+ * @property {AdminLib.Parameters.widget.Datatable.Create.ValidationLike} validatation    Validation function.
+ *
+ */
+
+/**
+ *
+ * @name AdminLib.Parameters.widget.Datatable.Create.ValidationLike
+ * @typedef {AdminLib.Parameters.widget.Datatable.Create.Validation | AdminLib.Parameters.widget.Datatable.Create.Validation.Function}
+ *
+ */
+
+/**
+ * @name AdminLib.Parameters.widget.Datatable.Create.Validation
+ * @extends {AdminLib.Action.Validation.Parameter}
+ * @property {AdminLib.Parameters.widget.Datatable.Create.Validation.Function} validation
+ *
+ */
+
+/**
+ * @callback AdminLib.widget.Datatable.Parameters.CreateFunction
+ * @param {Item} createdItem
+ * @returns {pSaveResult}
+ *
+ */
+
+/**
+ * @callback AdminLib.Parameters.widget.Datatable.Create.Validation.Function
+ * @extends {AdminLib.Action.Validation.Parameter.Function}
+ * @param {Item} createdItem
+ */
+
+/* ******************** DeleteAction ******************** */
+
+/**
+ *
+ * If you don't provide handler, then a model must have been provided to the
+ * datatable parameter object.
+ *
+ * @name AdminLib.widget.Datatable.DeleteAction
+ * @typedef {Object}
+ * @mixes {AdminLib.Action.Button.Parameters}
+ * @property {AdminLib.widget.Datatable.DeleteAction.Handler} handler
+ *
+ */
+
+/**
+ * @name AdminLib.widget.Datatable.DeleteAction.Like
+ * @typedef {AdminLib.widget.Datatable.DeleteAction|AdminLib.widget.Datatable.DeleteAction.Handler|string|boolean}
+ *
+ */
+
+/**
+ * @name pSaveResult
+ * @typedef {SaveResult|Promise.<SaveResult>}
+ *
+ */
+
+/**
+ * @callback AdminLib.widget.Datatable.DeleteAction.Handler
+ * @param {Item[]} deletedItems
+ * @returns {AdminLib.widget.Datatable.Delete.pResult}
+ *
+ */
+
+
+/**
+ * @name AdminLib.widget.Datatable.DeleteAction.Result
+ * @mixes  {AdminLib.Action.Result}
+ *
+ * Result of the delete action. The action should be marked as successful only if ALL
+ * items have been successfully deleted. If one or more items have failed to be deleted
+ * then the action should be marked as failed.
+ *
+ * @property {Array.<AdminLib.widget.Datatable.DeleteAction.ItemResult|boolean>} result  Each element represent the result of the deletion. If true, then the delete was successful
+ *
+ */
+
+/**
+ * @name AdminLib.widget.Datatable.DeleteAction.ItemResult
+ * @typedef {Object}
+ *
+ * @property {boolean} success Indicate if the item has been successfully deleted (true) or not (false).
+ * @property {string}  message Message to display for the given item if it hasn't been successfully deleted
+ *
+ */
+
+/**
+ * @name AdminLib.widget.Datatable.DeleteAction.pResult
+ * @typedef {AdminLib.widget.Datatable.DeleteAction.Result|Promise.<AdminLib.widget.Datatable.DeleteAction.Result>}
+ *
+ */
+
+/* ****************** EditAction ****************** */
+
+/**
+ *
+ * If a string is provided :
+ *    - Edit mode will be available
+ *    - The string will be use as label of the edit button
+ *
+ * If a boolean is provided, then it will indicate if the edit mode is available (true) or not (false).
+ *
+ * If a AdminLib.widget.Datatable.Edit.Handler function is provided, then :
+ *    - Edit mode will be available
+ *    - The function will be use to save the new values.
+ *
+ * @name AdminLib.widget.Datatable.EditAction.Like
+ * @typedef { AdminLib.widget.Datatable.EditAction.Parameter
+ *          | AdminLib.widget.Datatable.EditAction.Handler
+ *          | string
+ *          | boolean}
+ *
+ */
+
+/**
+ * @name AdminLib.widget.Datatable.EditAction.Parameter
+ * @typedef {Object}
+ * @property {AdminLib.Parameters.Button.Like}              editButton
+ * @property {AdminLib.widget.Datatable.EditAction.Handler} handler
+ */
+
+/**
+ * @name AdminLib.widget.Datatable.Parameters.EditAction.EnableType
+ * @typedef {boolean|AdminLib.widget.Datatable.Parameters.EditAction.EnableCallback}
+ */
+
+/**
+ * @callback AdminLib.widget.Datatable.Parameters.EditAction.EnableCallback
+ * @param {Item} item
+ * @returns {boolean}
+ *
+ */
+
+/**
+ * @callback AdminLib.widget.Datatable.EditAction.Handler
+ * @param {Item} editedItem
+ * @param {Item} originalItem
+ * @returns pSaveResult
+ *
+ */
+
+/**
+ * @name SaveResult
+ * @extends {AdminLib.Action.Result}
+ *
+ * Object representing the result of a saving at row level.
+ * If the saving is successful, a toastr will be displayed with the given title and message.
+ * If the saving has failed, a metronic alert will be displayed. In this case, the title will not be used.
+ *
+ * @typedef {Object}
+ * @property {object}  item New values of the item. It's this object that will be saved in the table.
+ *
+ */
+
+
+/**
+ *
+ * @typedef {Object} Item
+ */
+
+/**
+ * @name Classes
+ * @typedef {string|string[]}
+ *
+ * List of classes.
+ */
+
+/**
+ * @typedef {Object} AdminLib.widget.Datatable.Parameters.Language
+ * Describe the languages options on the table.
+ * This values correspond to the values of the "language" option of Datatable plugin.
+ * For more informations :
+ *    http://www.datatables.net/reference/option/#Internationalisation
+ *
+ * @property {string} emptyTable Table has no records string
+ * @property {string} reccord    [Non-standard] Give the possibility to personnalize the "reccord" label
+ *
+ *
+ */
+
+/**
+ * Define a row level button
+ * @typedef {Object} DataTableRowButton
+ * @extend {AdminLib.Action.Button.Parameter}
+ * @property {function(Item[]):AdminLib.Action.pResult} action - Action to execute. The function will receive the list of selected items
+ * @property {string}                                  size   - Size of the row. Should be a css value (ex: 10 rem);
+ *
+ */
+
+/**
+ *
+ * Define a row level action.
+ *
+ * @name AdminLib.widget.Datatable.RowAction.Parameters
+ * @extends {AdminLib.element.Button.Parameters}
+ * @typedef {Object}
+ * @property {AdminLib.widget.Datatable.RowAction.ActionCallback} action
+ */
+
+/**
+ * @callback AdminLib.widget.Datatable.RowAction.ActionCallback
+ * @param {Item[]}                             items
+ * @param {AdminLib.widget.Datatable.RowAction} rowAction
+ * @param {AdminLib.widget.Datatable}           datatable
+ *
+ */
+
+/**
+ *
+ * About returns :
+ *
+ * If the function return true, then the validation has been successfull : the action can continue.
+ * If the function return false, then the validation has failed : then action will stop
+ * If the function return a string, then it means that the validation has failed
+ * and the string will be display as an error message.
+ * If the function return undefined, then the validation will be considered as unsuccessful
+ *
+ *
+ * @callback AdminLib.widget.Datatable.RowAction.ValidationCallback
+ * @param {Item[]}                             items
+ * @param {AdminLib.widget.Datatable.RowAction} rowAction
+ * @param {AdminLib.widget.Datatable}           datatable
+ * @returns {Promise<AdminLib.widget.Datatable.RowAction.ValidationResult>|AdminLib.widget.Datatable.RowAction.ValidationResult|boolean|string}
+ *
+ */
+
+/**
+ *
+ * About results:
+ *
+ * If success is true, then the item will be considered as validated
+ * If success if false, then the item will be marked as fail
+ *
+ * If success is undefined, then it will be calculated using the results :
+ *    If at least one item validation has fail, all the validaiton will be marked as fail.
+ *
+ * If success is defined, then if at least one item has fail the validation, then a warning will be display to the user :
+ * the user will have the hability to continue or to cancel the action.
+ *
+ * A warning message can also be displayed if the "message" property is defined (even if success is true and results too)
+ *
+ * @name AdminLib.widget.Datatable.RowAction.ValidationResult
+ * @typedef {Object}
+ * @param {boolean[]} results    Result of the validation for each items
+ * @param {boolean}   [success]  Indicate if the validation can continue or not.
+ * @param {string}    message    Message to display to the user
+ *
+ */
+
+/**
+ * @name AdminLib.widget.Datatable.RowAction.ItemValidationResult
+ * @typedef {Object}
+ * @param {boolean} [result]
+ * @param {string}  message
+ *
+ */
+
+/**
+ * @name DOMString
+ * @typedef {string|function():string}
+ *
+ * Represent a string that is suitable for DOM representation.
+ * The difference with a regular javascript string is that this string
+ * can contain HTML tags that will be interpreted.
+ *
+ */
+
+/**
+ * @name DOMElement
+ * @typedef {(DOMElement|function():HTMLElement|HTMLElement)}
+ *
+ * A DOM element is destinate to be displayed. It can be either a string or a HTMLElement.
+ *
+ */
+
+/** @typedef {FieldValidationMessage|Promise.<FieldValidationMessage>} pFieldValidationMessage */
+
+/**
+ * @typedef {Object} FieldValidationMessage
+ * @property {boolean} success If false, indicate that the validation has failed.
+ * @property {string}  message Error message
+ */
+
+/**
+ * @name AdminLib.widget.Datatable.Validation.Handler
+ * @typedef {function(newItem:Item, oldItem:Item):AdminLib.widget.Datatable.Validation.Result.Like}
+ *
+ * Function that will be use to validate an item.
+ * Note that the same function will be call to validate creation of new item.
+ * In that case, they will be no second arguments.
+ *
+ */
+
+/**
+ * @name AdminLib.widget.Datatable.Validation.Result.Like
+ * @typedef {boolean|string|AdminLib.widget.Datatable.Validation.Result|Promise.AdminLib.widget.Datatable.Validation.Result.Like>}
+ *
+ *
+ *
+ */
+
+/**
+ *
+ * About continue :
+ *  If undefined, then the value will depend of results : if all rows return has validated, then the
+ *  action will continue. Otherwise, it will be marked in error.
+ *
+ * @typedef {Object} AdminLib.widget.Datatable.Validation.Result
+ *
+ *
+ * @property {boolean}   continue Indicate if the validation can continue or not.
+ * @property {string}    message  Error message, to display if the validation can continue but has errors
+ * @property {boolean[]} results  Result for each fiels
+ */
+
+/**
+ *
+ * @name CreationInformations
+ * @typedef {Object}
+ *
+ * @property {AdminLib.Action.Button}                 cancelButton    Button "Cancel"
+ * @property {boolean}                               fieldValidation If true, then each field will be validated by with their validation function.
+ * @property {CreateFunction}                        handler         Function to call once an item is created. The function will receive in parameter the created item.
+ * @property {AdminLib.Action.Button}                 newButton       Button "+ new"
+ * @property {AdminLib.Action.Button}                 saveButton      Button "Save"
+ * @property {function(Item):ActionValidationResult} validation      If true, then the new item will be validated using the datatable validation function.
+ */
+
+ /**
+  * @name AdminLib.widget.Datatable.Parameters.Style
+  *
+  * @property {boolean}                                               bordered     Default: true.
+  * @property {boolean}                                               condensed    Default: true.
+  * @property {boolean}                                               striped      Default: true. If true, then the rows will be stripped.
+  * @property {AdminLib.widget.Datatable.Parameters.Style.TableAction} tableActions
+  * @property {RowActions}                                            rowActions
+  *
+  */
+
+ /**
+  * @name RowActions
+  * @namespace AdminLib.widget.Datatable.Style
+  * 
+  * @property {boolean} top    Default: true. If true, then the row actions listbox will be displayed in the top.
+  * @property {boolean} bottom Default: false. If true, then the row actions listbox will be displayed in the bottom.
+  *
+  */
+
+ /**
+  * @name AdminLib.widget.Datatable.Parameters.Style.TableAction
+  * @namespace AdminLib.widget.Datatable.Style
+  *
+  * @property {boolean} top    Default: true. If true, then the table actions buttons will be displayed in the top.
+  * @property {boolean} bottom Default: false. If true, then the table actions buttons will be displayed in the bottom.
+  *
+  */
+
+
+/**
+ * @name AdminLib.widget.Datatable.EditModal.Parameters
+ * @typedef {Object}
+ * @property {AdminLib.Action.Button.Parameter} cancelButton   Informations about how to display the cancel button
+ * @property {boolean}                         fieldValidate  Indicate if each field should be validated or not
+ * @property {function(Item)}                  finalizeItem   Function executed to finalize the item. The function must modify the given item, not return a new one
+ * @property {Item}                            item           Edited item
+ * @property {function(Item):SaveResult}       save           Save function to execute
+ * @property {AdminLib.Action.Button.Parameter} saveButton     Informations about how to display the save button
+ * @property {string}                          title          Title of the modal
+ * @property {function(Item):ValidationResult} validation     Function that will validate the item
+ *
+ */
+
+/**
+ * @name AdminLib.widget.Datatable.CreationParameters
+ * @typedef {Object}
+ *
+ * @property {AdminLib.Action.Button}                            cancelButton
+ * @property {AdminLib.Action.Button}                            createButton
+ * @property {boolean}                                          enabled
+ * @property {boolean}                                          fieldValidation
+ * @property {function(Item)}                                   finalizeItem     Function executed to finalize the item. The function must modify the given item, not return a new one
+ * @property {function}                                         handler
+ * @property {string}                                           model
+ * @property {AdminLib.widget.Datatable.CreationParameter.Modal} modal
+ * @property {AdminLib.Action.Button}                            saveButton
+ * @property {function}                                         validation
+ *
+ */
+
+/**
+ * An item like object is an object (or a number) that will be used by the datatable
+ * to identify an item, a row, etc...
+ * If
+ *
+ *
+ * @name AdminLib.widget.Datatable.ItemLike
+ * @typedef {number | Item | HTMLTableRowElement | AdminLib.widget.Datatable.Row}
+ *
+ */
+
+/**
+ *
+ * Type HTMLTableCellElement :
+ *    The field will be the field to wich belongs the type.
+ *
+ * @name AdminLib.widget.Datatable.FieldLike
+ * @typedef {number | string | HTMLTableCellElement | AdminLib.widget.Datatable.Field}
+ *
+ */
+
+/**
+ * @name AdminLib.widget.Datatable.redrawParameters
+ * @typedef {Object}
+ *
+ * @property {boolean} draw      Default: false. If true, then the "redraw" function of the DataTable pluggin will be executed.
+ * @property {boolean} fixedRows Default: false. If true, then the fixed rows will be redrawn
+ */
+
+/**
+ * @name AdminLib.widget.Datatable.CreationParameter.Modal
+ * @typedef {Object}
+ * @property {boolean} enabled
+ * @property {string}  title
+ *
+ */
